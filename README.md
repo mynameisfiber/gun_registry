@@ -74,3 +74,22 @@ KeyError                                  Traceback (most recent call last)
                                                                            
 KeyError: 'RANDOM_ID'  
 ```
+
+## Config
+
+In `config.py` you'll see the various parameters for setting how resource
+intensive the encryption tasks are. Here's a rundown of what they mean:
+
+- `bcrypt.gensalt(rounds=18)`: This designates how hard it is to do the data
+  lookup (even if the data doesn't exist in the registry). Values range from
+  4-31 where 4 means the calculation is fast and 31 is incredibly slow. For
+  reference, on my laptop `rounds=4` results in 0.002s per gunid while
+  `rounds=31` results in 
+- `SCRYPT_ENC_PARAMS['maxtime']`: Maximum time in seconds to encrypt/decrypt the
+  payload of each record. The actual amount of time spent encryption is
+  generally fairly close to this number.
+- `SCRYPT_ENC_PARAMS['maxmem']`: Maximum amount of memory in bytes used to
+  encrypt/decrypt the payload of each record. Actual memory use is generally
+  fairly close to this number
+- `SCRYPT_ENC_PARAMS['maxmemfrac']`: Same as `maxmem` above, but written in terms
+  of a fraction of available memory.

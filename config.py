@@ -19,6 +19,3 @@ else:
        'maxtime': 120,
        'maxmem': int(64e6),  # 64 MB
     }
-    SCRYPT_DEC_PARAMS = {
-       'maxmemfrac': 0.1,
-    }

@@ -3,7 +3,7 @@ import bcrypt
 import pickle
 
 from utils import timer
-from config import GUN_SALT, SCRYPT_ENC_PARAMS, SCRYPT_DEC_PARAMS
+from config import GUN_SALT, SCRYPT_ENC_PARAMS
 
 
 class Record(object):
@@ -21,8 +21,7 @@ class Record(object):
     @timer
     def dec_metadata(self, enc_meta):
         key = self.gunid
-        meta_pkl = scrypt.decrypt(enc_meta, key, encoding=None,
-                                  **SCRYPT_DEC_PARAMS)
+        meta_pkl = scrypt.decrypt(enc_meta, key, encoding=None)
         self.metadata = pickle.loads(meta_pkl)
         return self
 
