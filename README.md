@@ -1,22 +1,33 @@
 # Secret Gun Registry
 
-America desperately needs a gun registry. This would be a database that tracks a
-gun's serial number as it is bought and sold throughout the country. However,
-because of strong lobbying powers and 18 U.S.C. 926(a) such a registry isn't
-allowed.
+America desperately needs a [gun
+registry](https://en.wikipedia.org/wiki/National_Tracing_Center#Computer_Assisted_Retrieval_System_.28CARS.29).
+Currently all we have are [paper
+records](https://www.vice.com/en_us/article/wdbd9y/the-atfs-nonsensical-non-searchable-gun-databases-explained-392)
+which cannot be searched. A gun registry would be a searchable database that
+tracks a gun's serial number as it is bought and sold throughout the country.
+However, because of [strong lobbying
+powers](http://www.washingtonpost.com/wp-dyn/content/article/2010/10/25/AR2010102505823.html)
+and [18 U.S.C.
+926(a)](http://www.nytimes.com/2012/12/26/us/legislative-handcuffs-limit-atfs-ability-to-fight-gun-crime.html)
+such a registry isn't allowed.
 
-Much of the argument against such a registry comes from the thought that it
-would help the government disarm citizens if there was ever revolts against
-them. However, this concern can be mitigated.
+Much of the [argument against such a
+registry](https://www.nraila.org/issues/registration-licensing/) comes from the
+thought that it would help the government disarm citizens if there was ever
+revolts against them. However, this concern can be mitigated.
 
 We present a database that has slow and resource intensive retrievals, encrypted
-storage and no scanning. This means:
+storage and no scanning. These slowdowns and resource requirements are a
+fundamental property of the way the data is stored. This means:
 
 - Transaction information can only be retrieved for known serial numbers
 - A full view of the database is not possible without first enumerating all
   serial numbers
 - Each retrieval can be forced to take an arbitrary amount of time, thus
   limiting any brute force attack
+- These properties persist even if the raw data is stolen and analyzed with new
+  code.
 
 ## How to use
 
@@ -80,17 +91,9 @@ KeyError: 'RANDOM_ID'
 In `config.py` you'll see the various parameters for setting how resource
 intensive the encryption tasks are. Here's a rundown of what they mean:
 
-- `bcrypt.gensalt(rounds=18)`: This designates how hard it is to do the data
-  lookup (even if the data doesn't exist in the registry). Values range from
-  4-31 where 4 means the calculation is fast and 31 is incredibly slow. For
-  reference, on my laptop `rounds=4` results in 0.002s per gun id while
-  `rounds=18` results in 20s. Each additional round [roughly
-  doubles](https://security.stackexchange.com/a/83382) the required time.
-- `SCRYPT_ENC_PARAMS['maxtime']`: Maximum time in seconds to encrypt/decrypt the
-  payload of each record. The actual amount of time spent encryption is
-  generally fairly close to this number.
-- `SCRYPT_ENC_PARAMS['maxmem']`: Maximum amount of memory in bytes used to
-  encrypt/decrypt the payload of each record. Actual memory use is generally
-  fairly close to this number
-- `SCRYPT_ENC_PARAMS['maxmemfrac']`: Same as `maxmem` above, but written in
-  terms of a fraction of available memory.
+| Parameter | Meaning |
+| --------- | ------- |
+| `bcrypt.gensalt(rounds=18)` | This designates how hard it is to do the data lookup (even if the data doesn't exist in the registry). Values range from 4-31 where 4 means the calculation is fast and 31 is incredibly slow. For reference, on my laptop `rounds=4` results in 0.002s per gun id while `rounds=18` results in 20s. Each additional round [roughly doubles](https://security.stackexchange.com/a/83382) the required time. |
+| `SCRYPT_ENC_PARAMS['maxtime']` | Maximum time in seconds to encrypt/decrypt the payload of each record. The actual amount of time spent encryption is generally fairly close to this number. |
+| `SCRYPT_ENC_PARAMS['maxmem']` | Maximum amount of memory in bytes used to encrypt/decrypt the payload of each record. Actual memory use is generally fairly close to this number |
+| `SCRYPT_ENC_PARAMS['maxmemfrac']` | Same as `maxmem` above, but written in terms of a fraction of available memory. |
