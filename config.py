@@ -6,10 +6,7 @@ if os.getenv('ENV') == 'DEV':
     DEBUG = True
     GUN_SALT = bcrypt.gensalt(rounds=4)
     SCRYPT_ENC_PARAMS = {
-      'maxtime': 1,
-      'maxmemfrac': 0.1,
-    }
-    SCRYPT_DEC_PARAMS = {
+      'maxtime': 0.1,
       'maxmemfrac': 0.1,
     }
 else:

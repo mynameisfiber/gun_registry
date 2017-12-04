@@ -15,6 +15,10 @@ class GunRegistry(dict):
         raise NotImplementedError("__setitem__ not implemented... "
                                   "use add() instead")
 
+    def __contains__(self, gunid):
+        key = Record(gunid).enc_gunid()
+        return super().__contains__(key)
+
     def add_record(self, gunid, **metadata):
         record = Record(gunid, **metadata)
         key = record.enc_gunid()
