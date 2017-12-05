@@ -19,6 +19,9 @@ class GunRegistry(dict):
         key = Record(gunid).enc_gunid()
         return super().__contains__(key)
 
+    def __getitem__(self, gunid):
+        return list(self.get_records(gunid))
+
     def add_record(self, gunid, **metadata):
         record = Record(gunid, **metadata)
         key = record.enc_gunid()
@@ -26,7 +29,7 @@ class GunRegistry(dict):
         self._add_record(key, value)
 
     def _get_records(self, key):
-        return self[key]
+        return super().__getitem__(key)
 
     def _add_record(self, key, value):
         super().setdefault(key, []).append(value)

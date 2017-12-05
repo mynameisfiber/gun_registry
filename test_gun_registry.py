@@ -10,7 +10,7 @@ def test_put_get():
     db = gr.GunRegistry()
     db.add_record(gunid, **metadata)
     assert gunid in db
-    assert next(db.get_records(gunid))['key'] == metadata['key']
+    assert db[gunid][0]['key'] == metadata['key']
 
 
 def test_put_get_multi():
@@ -24,13 +24,13 @@ def test_put_get_multi():
         gunids.append(gunid)
 
     for gunid in gunids:
-        assert next(db.get_records(gunid))['check'] == gunid
+        assert db[gunid][0]['check'] == gunid
 
 
 def test_get_noexist():
     db = gr.GunRegistry()
     try:
-        next(db.get_records("NOT_EXIST"))
+        db["NOT_EXIST"]
     except KeyError:
         return
     assert False, "We should have a KeyError"
